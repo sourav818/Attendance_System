@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Correct way to load CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, <span id="username-display"></span>!</h1>
+        <p>You have successfully logged in.</p>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const user = localStorage.getItem("loggedInUser");  // ✅ Corrected key
+        if (!user) {
+            window.location.href = "{{ url_for('login_page') }}"; // ✅ Redirect to login if not logged in
+        } else {
+            document.getElementById("username-display").textContent = user;
+        }
+
+        function logout() {
+            fetch("{{ url_for('logout') }}")  // ✅ Call Flask API for logout
+            .then(() => {
+                localStorage.removeItem("loggedInUser");  // ✅ Remove session data
+                window.location.href = "{{ url_for('login_page') }}"; // ✅ Redirect to login page
+            })
+            .catch(error => console.error("Logout error:", error));
+        }
+    </script>
+</body>
+</html>

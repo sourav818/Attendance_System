@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Student Attendance</title>
+    
+    <!-- Load CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="login-page">  <!-- ✅ Added class="login-page" -->
+    <div class="container">
+        <h2>Login</h2>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter Username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter Password" required><br>
+
+        <button id="loginBtn">Login</button>
+        <button id="faceLoginBtn">Login with Face</button>
+
+        <p id="loginMessage"></p>
+
+        <hr>
+        <h3>Register Face</h3>
+        <input type="text" id="registerUsername" placeholder="Username for Face Registration"><br>
+        <button id="startCamBtn">Start Camera</button>
+        <button id="captureBtn">Capture & Register</button>
+
+        <!-- Webcam Preview -->
+        <video id="webcam" autoplay playsinline width="320" height="240" style="margin-top:10px;"></video>
+        <canvas id="snapshot" style="display:none;"></canvas>
+    </div>
+
+    <!-- Load main JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- Face Recognition Inline Script -->
+    <script>
+        const webcam = document.getElementById("webcam");
+        const canvas = document.getElementById("snapshot");
+        const startCamBtn = document.getElementById("startCamBtn");
+        const captureBtn = document.getElementById("captureBtn");
+        const faceLoginBtn = document.getElementById("faceLoginBtn");
+
+        let stream;
+
+        // Start Webcam
+        startCamBtn.addEventListener("click", async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                webcam.srcObject = stream;
+            } catch (err) {
+                alert("❌ Cannot access webcam.");
+                console.error(err);
+            }
+        });
+
+        // Capture and Register Face
+        captureBtn.addEventListener("click", () => {
+            const username = document.getElementById("registerUsername").value.trim();
+            if (!username) {
+                alert("⚠️ Enter a username for face registration.");
+                return;
+            }
+
+            const context = canvas.getContext("2d");
+            canvas.width = webcam.videoWidth;
+            canvas.height = webcam.videoHeight;
+            context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL("image/jpeg");
+
+            fetch("http://127.0.0.1:5000/api/register_face", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: username, image: imageData })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || "Face registered!");
+                console.log("✅", data);
+            })
+            .catch(err => {
+                alert("❌ Face registration failed.");
+                console.error(err);
+            });
+        });
+
+        // Face Login
+        faceLoginBtn.addEventListener("click", () => {
+            const context = canvas.getContext("2d");
+            canvas.width = webcam.videoWidth;
+            canvas.height = webcam.videoHeight;
+            context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL("image/jpeg");
+
+            fetch("http://127.0.0.1:5000/api/face_login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ image: imageData })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.user) {
+                    localStorage.setItem("loggedInUser", data.user);
+                    sessionStorage.setItem("sessionActive", "true");
+                    alert("✅ Face login successful!");
+                    window.location.href = "/index";
+                } else {
+                    alert(data.message || "❌ Face login failed.");
+                }
+            })
+            .catch(err => {
+                alert("❌ Error during face login.");
+                console.error(err);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance Dashboard</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="dashboard-container" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;">
+    
+    <div class="articles-section" style="width: 40%; overflow: hidden;">
+      <h3>Related Articles</h3>
+      <div class="articles-scroll" style="display: flex; overflow-x: hidden; white-space: nowrap;">
+        <div class="article" style="min-width: 100%; display: inline-block; transition: transform 0.5s ease-in-out; padding: 10px; font-size: 14px;">
+          <img src="{{ url_for('static', filename='images/article-1.jpg') }}" alt="Article 1" style="max-width: 90%; height: auto; max-height: 150px; border-radius: 8px;" />
+          <div class="article-content">
+            <p><strong>AI in Attendance Systems:</strong> Discover how artificial intelligence transforms monitoring efficiency...</p>
+          </div>
+        </div>
+        <div class="article" style="min-width: 100%; display: inline-block; transition: transform 0.5s ease-in-out; padding: 10px; font-size: 14px;">
+          <img src="{{ url_for('static', filename='images/article-2.jpg') }}" alt="Article 2" style="max-width: 90%; height: auto; max-height: 150px; border-radius: 8px;" />
+          <div class="article-content">
+            <p><strong>Smart Campus Integration:</strong> Explore how smart attendance systems tie into a connected campus ecosystem...</p>
+          </div>
+        </div>
+        <div class="article" style="min-width: 100%; display: inline-block; transition: transform 0.5s ease-in-out; padding: 10px; font-size: 14px;">
+          <img src="{{ url_for('static', filename='images/article1.jpg') }}" alt="Article 3" style="max-width: 90%; height: auto; max-height: 150px; border-radius: 8px;" />
+          <div class="article-content">
+            <p><strong>Importance of Attendance:</strong> Regular attendance is crucial for academic success...</p>
+          </div>
+        </div>
+        <div class="article" style="min-width: 100%; display: inline-block; transition: transform 0.5s ease-in-out; padding: 10px; font-size: 14px;">
+          <img src="{{ url_for('static', filename='images/article2.jpg') }}" alt="Article 4" style="max-width: 90%; height: auto; max-height: 150px; border-radius: 8px;" />
+          <div class="article-content">
+            <p><strong>Using Technology in Attendance Management:</strong> Modern systems enhance efficiency...</p>
+          </div>
+        </div>
+        <div class="article" style="min-width: 100%; display: inline-block; transition: transform 0.5s ease-in-out; padding: 10px; font-size: 14px;">
+          <img src="{{ url_for('static', filename='images/article3.jpg') }}" alt="Article 5" style="max-width: 90%; height: auto; max-height: 150px; border-radius: 8px;" />
+          <div class="article-content">
+            <p><strong>Automated Attendance Tracking:</strong> Learn how AI is shaping student monitoring...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation buttons BELOW the articles -->
+      <div style="text-align: center; margin-top: 12px;">
+        <button id="prevArticle" style="background-color: #6a0dad; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 16px; cursor: pointer; margin-right: 10px;">◀ Previous</button>
+        <button id="nextArticle" style="background-color: #6a0dad; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 16px; cursor: pointer;">Next ▶</button>
+      </div>
+    </div>
+
+    <div class="chart-section" style="width: 55%;">
+      <h2>Attendance Dashboard</h2>
+      <canvas id="attendanceChart"></canvas>
+    </div>
+  </div>
+
+  <h2>Student Attendance Overview</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Session</th>
+        <th>Date</th>
+        <th>Attendance Percentage</th>
+        <th>Eligibility</th>
+      </tr>
+    </thead>
+    <tbody id="attendanceTableBody">
+      <!-- Data will be dynamically inserted here -->
+    </tbody>
+  </table>
+
+  <button onclick="window.location.href='{{ url_for('home') }}'">Back to Attendance</button>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const ctx = document.getElementById('attendanceChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Database', 'OS', 'Cloud Fundamentals'],
+          datasets: [{
+            label: 'Attendance Rate (%)',
+            data: [85, 90, 78],
+            backgroundColor: ['#6a0dad', '#ff5733', '#3498db']
+          }]
+        }
+      });
+
+      let attendanceTableBody = document.getElementById("attendanceTableBody");
+      let studentData = JSON.parse(localStorage.getItem("studentData")) || {};
+
+      Object.keys(studentData).forEach(subject => {
+        let students = studentData[subject];
+        students.forEach(student => {
+          let totalClasses = 10;
+          let attendedClasses = Math.floor(Math.random() * totalClasses);
+          let percentage = (attendedClasses / totalClasses) * 100;
+          let eligibility = percentage >= 75 ? "Eligible" : "Not Eligible";
+
+          let row = `
+            <tr>
+              <td>${student.name}</td>
+              <td>${subject}</td>
+              <td>${new Date().toLocaleDateString()}</td>
+              <td>${percentage.toFixed(2)}%</td>
+              <td style="color: ${eligibility === "Eligible" ? "green" : "red"};">${eligibility}</td>
+            </tr>
+          `;
+          attendanceTableBody.innerHTML += row;
+        });
+      });
+    });
+
+    $(document).ready(function () {
+      let scrollContainer = $('.articles-scroll');
+      let articleWidth = $('.article').outerWidth(true);
+      let index = 0;
+
+      function slideArticles() {
+        let maxIndex = $('.article').length - 1;
+        if (index < maxIndex) {
+          index++;
+        }
+        let scrollAmount = index * articleWidth;
+        scrollContainer.css('transform', `translateX(-${scrollAmount}px)`);
+      }
+
+      $('#nextArticle').click(function () {
+        slideArticles();
+      });
+
+      $('#prevArticle').click(function () {
+        if (index > 0) {
+          index--;
+          let scrollAmount = index * articleWidth;
+          scrollContainer.css('transform', `translateX(-${scrollAmount}px)`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
