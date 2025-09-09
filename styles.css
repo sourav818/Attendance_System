@@ -1,0 +1,378 @@
+/* =================== General Styles =================== */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* =================== Background Image (Only for Login Page) =================== */
+.login-page {
+    background-image: url('../static/images/login-bg.jpg'); /* Ensure the path is correct */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* =================== Container =================== */
+.container {
+    background: rgba(255, 255, 255, 0.7); /* Slightly transparent white background */
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* =================== Login Page Specific Styling =================== */
+.login-container {
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 50px auto;
+}
+
+/* =================== Buttons =================== */
+button {
+    background-color: #6a0dad;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #4a0072;
+    transform: scale(1.05);
+}
+
+/* Special Buttons */
+#addSessionBtn, #addSubjectBtn {
+    background-color: #007bff;
+}
+
+#addSessionBtn:hover, #addSubjectBtn:hover {
+    background-color: #0056b3;
+}
+
+#deleteBtn {
+    background-color: #dc3545;
+}
+
+#deleteBtn:hover {
+    background-color: #a71d2a;
+}
+
+/* =================== Input Fields =================== */
+input {
+    width: 92%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+#registerUsername, #loginUsername {
+    border: 1px solid #4a0072;
+}
+
+/* Error Message */
+#loginMessage {
+    color: red;
+    font-weight: bold;
+}
+
+/* =================== Course Selection =================== */
+.course-container {
+    background: white;
+    padding: 15px;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.course-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    min-width: 120px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.course-btn:hover {
+    background-color: #217dbb;
+    transform: scale(1.05);
+}
+
+/* =================== Attendance Table =================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #6a0dad;
+    color: white;
+}
+
+/* Attendance Checkbox */
+.attendance-checkbox {
+    transform: scale(1.2);
+}
+
+/* =================== Chart =================== */
+.chart-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+/* =================== Attendance Report =================== */
+.attendance-report-container {
+    background: white;
+    padding: 20px;
+    max-width: 90%;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.attendance-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.attendance-report-table th, .attendance-report-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.attendance-report-table th {
+    background-color: #6a0dad;
+    color: white;
+}
+
+/* Conditional Formatting */
+.eligible {
+    color: green;
+    font-weight: bold;
+}
+
+.not-eligible {
+    color: red;
+    font-weight: bold;
+}
+
+/* =================== Modal (Records) =================== */
+#recordsModal {
+    position: fixed;
+    top: 10%;
+    left: 20%;
+    width: 60%;
+    background: #ffffff;
+    border: 2px solid #6a0dad;
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+#recordsContent {
+    text-align: left;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+#recordsModal button {
+    width: auto;
+    padding: 10px 16px;
+    background-color: #dc3545;
+}
+
+#recordsModal button:hover {
+    background-color: #a71d2a;
+}
+
+#showRecordsBtn {
+    background-color: #28a745;
+}
+
+#showRecordsBtn:hover {
+    background-color: #1c7c31;
+}
+
+/* =================== Face Recognition & Webcam =================== */
+#webcam {
+    margin-top: 10px;
+    border: 2px solid #6a0dad;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(106, 13, 173, 0.2);
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
+#captureBtn, #startCamBtn, #faceLoginBtn {
+    background-color: #ff9800;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#captureBtn:hover, #startCamBtn:hover, #faceLoginBtn:hover {
+    background-color: #e07b00;
+}
+
+/* Face Registration Input */
+#registerUsername {
+    width: 92%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    border: 1px solid #6a0dad;
+    border-radius: 5px;
+}
+
+/* Snapshot Styling */
+#snapshot {
+    display: none;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+/* =================== Responsive Design =================== */
+@media screen and (max-width: 600px) {
+    .container, .course-container, .chart-container {
+        max-width: 95%;
+        padding: 15px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    #webcam {
+        width: 100%;
+        height: auto;
+    }
+
+    .attendance-report-container {
+        max-width: 95%;
+        overflow-x: scroll;
+    }
+
+    .attendance-report-table {
+        font-size: 12px;
+    }
+}
+
+/* =================== Divider =================== */
+hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+/* =================== Related Articles Carousel =================== */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 600px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    background: #fff;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.carousel-item p {
+    font-size: 16px;
+    color: #333;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 20px;
+    z-index: 10;
+}
+
+#carouselPrev {
+    left: 10px;
+}
+
+#carouselNext {
+    right: 10px;
+}
+
+.carousel-btn:hover {
+    background-color: #4a0072;
+}
