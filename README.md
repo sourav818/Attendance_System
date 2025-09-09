@@ -199,7 +199,7 @@ tests/ → Unit & integration tests.
 
 docs/ → Diagrams & your PDF report.
 
-👨‍💻 Authors
+👨‍💻 Author
 Sourav Paul – GitHub
 Guided by Dr. Gunikhan Sonowal (Assam down town University).
 
